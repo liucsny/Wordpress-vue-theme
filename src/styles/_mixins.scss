@@ -1,0 +1,4 @@
+@mixin bg-img($url :'http://mrmrs.github.io/photos/display.jpg'){
+  background:url($url) no-repeat center right;
+  background-size: cover;
+}

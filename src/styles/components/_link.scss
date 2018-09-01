@@ -1,0 +1,5 @@
+.link-button{
+  @extend .link;
+  @extend .underline-hover;
+  @extend .pointer;
+}
