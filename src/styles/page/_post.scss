@@ -1,9 +1,13 @@
 .page-container{
   @extend .pt6;
+  @extend .pr7;
   height: 100vh;
-  max-width: 50%;
   margin-left: 33%;
   overflow: scroll;
+
+  div{
+    word-wrap: break-word;
+  }
 }
 
 .page-title{

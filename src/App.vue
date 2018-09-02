@@ -53,6 +53,10 @@ export default {
   font-weight: 800;
 }
 
+html{
+  @extend .bg-black;
+}
+
 .bg-img{
   @include bg-img;
 }

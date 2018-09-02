@@ -1,26 +1,30 @@
 <template>
-  <article>
+  <article class="bg-black">
     <div class="vh-100 bg-black dt w-100">
-      <video ref="player" v-if="hasVideo" autoplay loop class="bg-video">
+      <video ref="player" v-if="hasVideo" autoplay muted='true' loop class="bg-video">
         <source :src="bgVideoURL" type="video/mp4">
       </video>
       <div v-else :style="{ backgroundImage: 'url(' + bgImgURL + ')' }" class="bg-img"></div>
-      <div class="dtc v-mid cover ph3 ph4-m ph5-l relative bg-black-40">
+      <div class="dtc tc v-mid cover ph3 ph4-m ph5-l relative bg-black-40">
         <h1 class="f2 f-subheadline-l measure lh-title fw9">Drowning Pool Productions</h1>
-        <div class="flex ">
-          <router-link to="info" tag='div' class="f6 fw6 ttu mr4 link-button">watch reel</router-link>
+        <div class="flex justify-center">
+          <div @click="showPlayer = true" class="f6 fw6 ttu mr4 link-button">watch reel</div>
           <router-link :to="'site/' + newestPostURL" tag='div' class="f6 fw6 ttu mr4 link-button">enter site</router-link>
         </div>
       </div>
     </div>
+    <app-player @closePlayer='showPlayer = false' v-if="showPlayer" :iframe='videoIframe'></app-player>
+    <!-- <iframe width="720" height="405" scrolling="no"  style="border: none;"  allowfullscreen src="https://gaiamount.com/insert?mid=24753"></iframe> -->
     <!-- <iframe width="100%" height="800px" scrolling="no"  style="border: none;"  allowfullscreen src="https://gaiamount.com/insert?wid=37997"></iframe> -->
   </article>
 </template>
 
 <script>
+import appPlayer from './partials/Player.vue';
 import { mapGetters } from 'vuex';
 
 export default {
+  components: {appPlayer},
   data(){
     return {
       post: null,
@@ -28,6 +32,8 @@ export default {
       hasVideo: false,
       bgVideoURL: null,
       newestPostURL: null,
+      showPlayer: false,
+      videoIframe: ''
     }
   },
   computed:{
@@ -42,6 +48,7 @@ export default {
     this.checkHasVideo();
     this.getBgImgURL();
     this.getNewestPost();
+    this.getVideoIframe();
   },
   mounted(){
     this.replayVideo();
@@ -54,7 +61,9 @@ export default {
       if(this.hasVideo){
         let player = this.$refs.player;
         // console.log(player)
+        player.muted= true;
         player.pause();
+        // player.play();
         setTimeout(()=>{
           player.play();
           // console.log('time')
@@ -79,6 +88,12 @@ export default {
         this.bgVideoURL = this.post.metadata.featured_video[0];
       }else{
         this.hasVideo = false;
+      }
+    },
+    getVideoIframe(){
+      if((!!this.post.metadata)&&(!!this.post.metadata.video)){
+        // console.log(this.post.metadata)
+        this.videoIframe = this.post.metadata.video[0];
       }
     },
     getPost(){

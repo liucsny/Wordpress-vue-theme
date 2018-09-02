@@ -1,0 +1,27 @@
+.player-container{
+  // border: 1px yellow solid;
+  z-index: 999;
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  .player-close{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    // width: 20px;
+    // height: 20px;
+    font-size: 2rem;
+    @extend .pointer;
+    @extend .dim;
+  }
+  .player-inner-container{
+    width: 100vw;
+    height: 100vh;
+  }
+  iframe{
+    width: 100% !important;
+    height: 100% !important;
+  }
+}

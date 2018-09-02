@@ -4,28 +4,33 @@
       <source :src="bgVideoURL" type="video/mp4">
     </video>
     <div v-else :style="{ backgroundImage: 'url(' + bgImgURL + ')' }" class="bg-img"></div>
-    <div v-if="post" class="relative page-container">
+    <div v-if="post" class="relative page-container pb6">
       <div class="page-title">{{ post.title.rendered }}</div>
       <div v-html="post.content.rendered"></div>
+      <div v-if=' videoIframe !== "" ' @click="showPlayer=true" class="link-button ttu f3 pt4">Watch Video</div>
     </div>
     <Loader v-else />
+    <app-player @closePlayer='showPlayer = false' v-if="showPlayer" :iframe='videoIframe'></app-player>
   </div>
 </template>
 
 <script>
 import Loader from '../partials/Loader.vue';
+import appPlayer from '../partials/Player.vue';
 import { mapGetters } from 'vuex';
 
 export default {
+  components: {appPlayer, Loader},
   data() {
     return {
       post: null,
       bgImgURL: null,
       hasVideo: false,
       bgVideoURL: null,
+      showPlayer: false,
+      videoIframe: ''
     }
   },
-
   computed: {
   },
 
@@ -53,6 +58,7 @@ export default {
       .then(response => {
         this.post = response.data[0];
         this.checkHasVideo();
+        this.getVideoIframe()
         this.getBgImgURL();
       })
       .catch(e => {
@@ -60,14 +66,18 @@ export default {
       })
     },
     checkHasVideo(){
-      // let suffix = this.bgImgURL.substring(this.bgImgURL.indexOf(".")+1);
-      // this.isImg = (suffix == 'png')||(suffix == 'jpg')||(suffix == 'jpeg')||(suffix == 'gif')||(suffix == 'bmp');
-      // console.log(this.post)
+      console.log(this.post)
       if((!!this.post.metadata)&&(!!this.post.metadata.featured_video)){
         this.hasVideo = true;
         this.bgVideoURL = this.post.metadata.featured_video[0];
       }else{
         this.hasVideo = false;
+      }
+    },
+    getVideoIframe(){
+      if((!!this.post.metadata)&&(!!this.post.metadata.video)){
+        // console.log(this.post.metadata)
+        this.videoIframe = this.post.metadata.video[0];
       }
     },
     getBgImgURL(){
@@ -81,18 +91,13 @@ export default {
               // console.log(this.hasVideo)
         })
       }
-    }
+    },
   },
-
-  components: {
-    Loader
-  },
-
-
   watch: {
     '$route' (to, from) {
       this.getPost();
       this.replayVideo();
+      this.videoIframe=''
       // console.log(this.$route.params)
       // react to route changes...
     }
