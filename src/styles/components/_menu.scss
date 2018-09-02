@@ -1,3 +1,10 @@
+.menu-logo{
+  @extend .pointer;
+  @extend .pl3;
+  @extend .pt5;
+  @extend .f2;
+}
+
 .menu-side-bar{
   height: 100vh;
   @extend .mr4;
@@ -21,5 +28,7 @@
   .menu-category-name{
     // @extend .pl4;
     @extend .f4;
+    @extend .list;
+    @extend .pointer;
   }
 }

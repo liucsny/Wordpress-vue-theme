@@ -27,6 +27,11 @@ const router = new Router({
           name: 'Post',
           component: Post
         },
+        {
+          path: '/:pageSlug',
+          name: 'Page',
+          component: Page
+        }
       ]
     },
     // {
@@ -35,11 +40,6 @@ const router = new Router({
     //   name: 'Post',
     //   component: Post
     // },
-    {
-      path: '/:pageSlug',
-      name: 'Page',
-      component: Page
-    }
   ],
   mode: 'history',
   base: '',

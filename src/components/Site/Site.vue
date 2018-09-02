@@ -1,7 +1,7 @@
 <template>
   <div class="bg-black full">
     <div class="menu-side-bar">
-      <router-link tag='div' to='/' class="pointer pl3 pt4 f2">Drowning Pool</router-link>
+      <router-link tag='div' to='/' class="menu-logo">Drowning Pool</router-link>
       <side-menu :list='menuList'></side-menu>
     </div>
     <router-view/>

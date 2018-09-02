@@ -1,3 +1,11 @@
 .page-container{
-  
+  @extend .pt6;
+  height: 100vh;
+  max-width: 50%;
+  margin-left: 33%;
+  overflow: scroll;
+}
+
+.page-title{
+  @extend .f1;
 }

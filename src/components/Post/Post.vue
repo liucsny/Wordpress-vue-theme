@@ -4,8 +4,8 @@
       <source :src="bgVideoURL" type="video/mp4">
     </video>
     <div v-else :style="{ backgroundImage: 'url(' + bgImgURL + ')' }" class="bg-img"></div>
-    <div v-if="post" class="relative">
-      <div>{{ post.title.rendered }}</div>
+    <div v-if="post" class="relative page-container">
+      <div class="page-title">{{ post.title.rendered }}</div>
       <div v-html="post.content.rendered"></div>
     </div>
     <Loader v-else />
@@ -49,7 +49,7 @@ export default {
     checkHasVideo(){
       // let suffix = this.bgImgURL.substring(this.bgImgURL.indexOf(".")+1);
       // this.isImg = (suffix == 'png')||(suffix == 'jpg')||(suffix == 'jpeg')||(suffix == 'gif')||(suffix == 'bmp');
-      console.log(this.post)
+      // console.log(this.post)
       if((!!this.post.metadata)&&(!!this.post.metadata.featured_video)){
         this.hasVideo = true;
         this.bgVideoURL = this.post.metadata.featured_video[0];
