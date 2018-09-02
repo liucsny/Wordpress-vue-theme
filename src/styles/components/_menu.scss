@@ -1,0 +1,25 @@
+.menu-side-bar{
+  height: 100vh;
+  @extend .mr4;
+  @extend .pl3;
+  @extend .fl;
+  @extend .relative;
+  @extend .z-3;
+  @extend .bg-black-60;
+}
+
+.menu-container{
+  width: 20rem;
+  @extend .pr4;
+  @extend .pl2;
+  // @extend .w5;
+
+  .menu-ul{
+    @extend .pl4;
+    @extend .pointer;
+  }
+  .menu-category-name{
+    // @extend .pl4;
+    @extend .f4;
+  }
+}

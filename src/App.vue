@@ -6,18 +6,7 @@
         <div class="progress-bar" role="progressbar" :style="loaderStyle" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
       </div>
     </transition>
-
-    <article>
-      <header class="vh-100 bg-black dt w-100">
-        <div class="dtc v-mid cover ph3 ph4-m ph5-l bg-img">
-          <h1 class="f2 f-subheadline-l measure lh-title fw9">Drowning Pool Productions</h1>
-          <div class="flex ">
-            <div class="f6 fw6 ttu mr4 link-button">watch reel</div>
-            <div class="f6 fw6 ttu mr4 link-button">enter site</div>
-          </div>
-        </div>
-      </header>
-    </article>
+    <router-view/>
   </div>
 </template>
 
@@ -56,8 +45,15 @@ export default {
 </script>
 <style lang="scss">
 @import './styles/app.scss';
+@import url("https://use.typekit.net/vol3eny.css");
+
+*{
+  font-family: adrianna-condensed, sans-serif !important;
+  font-style: italic;
+  font-weight: 800;
+}
 
 .bg-img{
-  @include bg-img('https://drowningpool.tv/wp-content/uploads/2018/08/head2.jpg');
+  @include bg-img;
 }
 </style>

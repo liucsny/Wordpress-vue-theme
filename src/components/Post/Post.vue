@@ -1,11 +1,15 @@
 <template>
-  <b-container class="bv-example-row pt-4">
-    <template v-if="post">
-      <h1>{{ post.title.rendered }}</h1>
+  <div class="">
+    <video v-if="hasVideo" autoplay loop class="bg-video">
+      <source :src="bgVideoURL" type="video/mp4">
+    </video>
+    <div v-else :style="{ backgroundImage: 'url(' + bgImgURL + ')' }" class="bg-img"></div>
+    <div v-if="post" class="relative">
+      <div>{{ post.title.rendered }}</div>
       <div v-html="post.content.rendered"></div>
-    </template>
+    </div>
     <Loader v-else />
-  </b-container>
+  </div>
 </template>
 
 <script>
@@ -15,16 +19,19 @@ import { mapGetters } from 'vuex';
 export default {
   data() {
     return {
-      post: false
+      post: null,
+      bgImgURL: null,
+      hasVideo: false,
+      bgVideoURL: null,
     }
   },
 
   computed: {
-
   },
 
   beforeMount() {
-    this.getPost()
+    this.getPost();
+    // this.getBgImgURL();
   },
 
   methods: {
@@ -32,15 +39,49 @@ export default {
       axios.get(window.SETTINGS.API_BASE_PATH + 'posts?slug=' + this.$route.params.postSlug)
       .then(response => {
         this.post = response.data[0];
+        this.checkHasVideo();
+        this.getBgImgURL();
       })
       .catch(e => {
         console.log(e);
       })
+    },
+    checkHasVideo(){
+      // let suffix = this.bgImgURL.substring(this.bgImgURL.indexOf(".")+1);
+      // this.isImg = (suffix == 'png')||(suffix == 'jpg')||(suffix == 'jpeg')||(suffix == 'gif')||(suffix == 'bmp');
+      console.log(this.post)
+      if((!!this.post.metadata)&&(!!this.post.metadata.featured_video)){
+        this.hasVideo = true;
+        this.bgVideoURL = this.post.metadata.featured_video[0];
+      }else{
+        this.hasVideo = false;
+      }
+    },
+    getBgImgURL(){
+      if(!this.hasVideo){
+        let homeMediaId = this.post.featured_media;
+        axios.get(window.SETTINGS.API_BASE_PATH + 'media/' + homeMediaId)
+            .then(response => {
+            // 这里调整图片filesize大小
+            //   console.log(response.data.media_details.sizes.medium.source_url)
+              this.bgImgURL = response.data.media_details.sizes.large.source_url;
+              // console.log(this.hasVideo)
+        })
+      }
     }
   },
 
   components: {
     Loader
+  },
+
+
+  watch: {
+    '$route' (to, from) {
+      this.getPost()
+      // console.log(this.$route.params)
+      // react to route changes...
+    }
   }
 }
 </script>

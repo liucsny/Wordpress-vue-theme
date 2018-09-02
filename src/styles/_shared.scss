@@ -1,0 +1,11 @@
+.full{
+  width: 100vw;
+  height: 100vh;
+}
+
+.bg-video{
+  @extend .absolute;
+  @extend .w-100;
+  @extend .h-100; 
+  left: 0;
+}

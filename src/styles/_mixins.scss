@@ -1,4 +1,9 @@
-@mixin bg-img($url :'http://mrmrs.github.io/photos/display.jpg'){
-  background:url($url) no-repeat center right;
+@mixin bg-img{
+  background:no-repeat center right;
   background-size: cover;
+  position: absolute;
+  width: 100%;
+  height: 100%;
 }
+
+// 'https://drowningpool.tv/wp-content/uploads/2018/08/head2.jpg'

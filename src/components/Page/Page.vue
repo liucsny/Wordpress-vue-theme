@@ -1,11 +1,12 @@
 <template>
-  <b-container class="bv-example-row pt-4">
+  <div class="bv-example-row pt-4">
     <template v-if="allPagesLoaded">
       <h1>{{ pageContent.title.rendered }}</h1>
       <div v-html="pageContent.content.rendered"></div>
+      <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea id, provident nobis debitis culpa, doloribus ducimus quisquam repudiandae quia laborum veniam, aliquam expedita. Reprehenderit voluptatibus, corrupti possimus at sint nostrum.</div>
     </template>
     <Loader v-else />
-  </b-container>
+  </div>
 </template>
 
 <script>

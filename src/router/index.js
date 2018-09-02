@@ -5,6 +5,7 @@ import Router from 'vue-router'
 import Home from '../components/Home.vue'
 import Post from '../components/Post/Post.vue'
 import Page from '../components/Page/Page.vue'
+import Site from '../components/Site/Site.vue'
 
 Vue.use(Router)
 
@@ -16,11 +17,24 @@ const router = new Router({
       component: Home
     },
     {
-      // Assuming you're using the default permalink structure for posts
-      path: '/:year/:month/:day/:postSlug',
-      name: 'Post',
-      component: Post
+      path: '/site',
+      name: 'Site',
+      component: Site,
+      children:[
+        {
+          // Assuming you're using the default permalink structure for posts
+          path: ':id/:postSlug',
+          name: 'Post',
+          component: Post
+        },
+      ]
     },
+    // {
+    //   // Assuming you're using the default permalink structure for posts
+    //   path: '/:year/:month/:day/:postSlug',
+    //   name: 'Post',
+    //   component: Post
+    // },
     {
       path: '/:pageSlug',
       name: 'Page',

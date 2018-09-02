@@ -4,10 +4,34 @@ remove_action('template_redirect', 'redirect_canonical');
 
 add_theme_support( 'post-thumbnails' );
 
+// 测试
+add_theme_support( 'automatic-feed-links' );
+add_theme_support( 'custom-background' );
+
+register_rest_field( 'post', 'metadata', array(
+    'get_callback' => function ( $data ) {
+        return get_post_meta( $data['id'], '', '' );
+    }, ));
+
+// 注册post的metadata
 register_rest_field( 'post', 'metadata', array(
 'get_callback' => function ( $data ) {
     return get_post_meta( $data['id'], '', '' );
 }, ));
+
+// 注册page的metadata
+register_rest_field( 'page', 'metadata', array(
+'get_callback' => function ( $data ) {
+    return get_post_meta( $data['id'], '', '' );
+}, ));
+
+function slug_get_post_meta_cb( $object, $field_name, $request ) {
+    return get_post_meta( $object[ 'id' ], $field_name );
+}
+ 
+function slug_update_post_meta_cb( $value, $object, $field_name ) {
+    return update_post_meta( $object[ 'id' ], $field_name, $value );
+}
 
 // Redirect all requests to index.php so the Vue app is loaded and 404s aren't thrown
 function remove_redirects() {

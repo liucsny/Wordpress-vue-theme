@@ -1,6 +1,9 @@
 @import "../../../customtheme/node_modules/tachyons-sass/tachyons.scss";
-@import '_mixins.scss';
+@import 'mixins.scss';
 
 @import "components/link";
+@import "page/post";
+@import "shared";
 @import "components/loader";
+@import "components/menu";
 // @import "shared/img";
