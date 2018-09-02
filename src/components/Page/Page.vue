@@ -1,6 +1,6 @@
 <template>
   <div class="">
-    <video v-if="hasVideo" autoplay loop class="bg-video">
+    <video ref="player" v-if="hasVideo" autoplay loop class="bg-video">
       <source :src="bgVideoURL" type="video/mp4">
     </video>
     <div v-else :style="{ backgroundImage: 'url(' + bgImgURL + ')' }" class="bg-img"></div>
@@ -26,17 +26,6 @@ export default {
     pageContent() {
       return this.page(this.$route.params.pageSlug)
     },
-    // hasVideo(){
-    //   console.log(this.pageContent);
-
-    //   if((!!this.pageContent.metadata)&&(!!this.pageContent.metadata.featured_video)){
-    //     // this.hasVideo = true;
-    //     this.bgVideoURL = this.pageContent.metadata.featured_video[0];
-    //     return true
-    //   }else{
-    //     return false
-    //   }
-    // },
   },
   components: {
     Loader
@@ -53,12 +42,22 @@ export default {
     this.getBgURL();
     // console.log(this.hasVideo)
   },
+  mounted(){
+    this.replayVideo();
+  },
   methods: {
+    replayVideo(){
+      if(this.hasVideo){
+        let player = this.$refs.player;
+        // console.log('Info')
+        player.pause();
+        setTimeout(()=>{
+          player.play();
+          // console.log('postTime')
+        },1000)
+      }
+    },
     checkHasVideo(){
-      // let suffix = this.bgImgURL.substring(this.bgImgURL.indexOf(".")+1);
-      // this.isImg = (suffix == 'png')||(suffix == 'jpg')||(suffix == 'jpeg')||(suffix == 'gif')||(suffix == 'bmp');
-      // console.log(this.pageContent)
-
       if((!!this.pageContent.metadata)&&(!!this.pageContent.metadata.featured_video)){
         this.hasVideo = true;
         this.bgVideoURL = this.pageContent.metadata.featured_video[0];

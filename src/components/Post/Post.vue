@@ -1,6 +1,6 @@
 <template>
   <div class="">
-    <video v-if="hasVideo" autoplay loop class="bg-video">
+    <video ref="player" v-if="hasVideo" autoplay loop class="bg-video">
       <source :src="bgVideoURL" type="video/mp4">
     </video>
     <div v-else :style="{ backgroundImage: 'url(' + bgImgURL + ')' }" class="bg-img"></div>
@@ -33,8 +33,21 @@ export default {
     this.getPost();
     // this.getBgImgURL();
   },
-
+  mounted(){
+    this.replayVideo();
+  },
   methods: {
+    replayVideo(){
+      if(this.hasVideo){
+        let player = this.$refs.player;
+        // console.log(player)
+        player.pause();
+        setTimeout(()=>{
+          player.play();
+          // console.log('postTime')
+        },1000)
+      }
+    },
     getPost: function() {
       axios.get(window.SETTINGS.API_BASE_PATH + 'posts?slug=' + this.$route.params.postSlug)
       .then(response => {
@@ -78,7 +91,8 @@ export default {
 
   watch: {
     '$route' (to, from) {
-      this.getPost()
+      this.getPost();
+      this.replayVideo();
       // console.log(this.$route.params)
       // react to route changes...
     }

@@ -1,7 +1,7 @@
 <template>
   <article>
     <div class="vh-100 bg-black dt w-100">
-      <video v-if="hasVideo" autoplay loop class="bg-video">
+      <video ref="player" v-if="hasVideo" autoplay loop class="bg-video">
         <source :src="bgVideoURL" type="video/mp4">
       </video>
       <div v-else :style="{ backgroundImage: 'url(' + bgImgURL + ')' }" class="bg-img"></div>
@@ -13,6 +13,7 @@
         </div>
       </div>
     </div>
+    <!-- <iframe width="100%" height="800px" scrolling="no"  style="border: none;"  allowfullscreen src="https://gaiamount.com/insert?wid=37997"></iframe> -->
   </article>
 </template>
 
@@ -42,7 +43,24 @@ export default {
     this.getBgImgURL();
     this.getNewestPost();
   },
+  mounted(){
+    this.replayVideo();
+    // let player = document.getElementById('player');
+    // console.log(player)
+    // console.log('mounted');
+  },
   methods:{
+    replayVideo(){
+      if(this.hasVideo){
+        let player = this.$refs.player;
+        // console.log(player)
+        player.pause();
+        setTimeout(()=>{
+          player.play();
+          // console.log('time')
+        },1000)
+      }
+    },
     getNewestPost(){
       axios.get(window.SETTINGS.API_BASE_PATH + 'posts?per_page=1')
             .then(response=>{
