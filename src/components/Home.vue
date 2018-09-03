@@ -1,9 +1,7 @@
 <template>
   <article class="bg-black">
     <div class="vh-100 bg-black dt w-100">
-      <video ref="player" v-if="hasVideo" autoplay muted='true' loop class="bg-video">
-        <source :src="bgVideoURL" type="video/mp4">
-      </video>
+      <video ref="player" v-if="hasVideo" autoplay muted='true' loop class="bg-video" :src="bgVideoURL"></video>
       <div v-else :style="{ backgroundImage: 'url(' + bgImgURL + ')' }" class="bg-img"></div>
       <div class="dtc tc v-mid cover ph3 ph4-m ph5-l relative bg-black-40">
         <h1 class="f2 f-subheadline-l measure lh-title fw9">Drowning Pool Productions</h1>

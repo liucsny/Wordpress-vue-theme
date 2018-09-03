@@ -1,8 +1,6 @@
 <template>
   <div class="">
-    <video ref="player" v-if="hasVideo" autoplay loop class="bg-video">
-      <source :src="bgVideoURL" type="video/mp4">
-    </video>
+    <video ref="player" v-if="hasVideo" autoplay muted='true' loop class="bg-video" :src="bgVideoURL"></video>
     <div v-else :style="{ backgroundImage: 'url(' + bgImgURL + ')' }" class="bg-img"></div>
     <div v-if="post" class="relative page-container pb6">
       <div class="page-title">{{ post.title.rendered }}</div>
@@ -46,6 +44,7 @@ export default {
       if(this.hasVideo){
         let player = this.$refs.player;
         // console.log(player)
+        player.muted= true;
         player.pause();
         setTimeout(()=>{
           player.play();
@@ -66,7 +65,7 @@ export default {
       })
     },
     checkHasVideo(){
-      console.log(this.post)
+      // console.log(this.post)
       if((!!this.post.metadata)&&(!!this.post.metadata.featured_video)){
         this.hasVideo = true;
         this.bgVideoURL = this.post.metadata.featured_video[0];

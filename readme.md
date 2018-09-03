@@ -1,6 +1,6 @@
 # Vuejs-wordpress-theme
 
-A custom wordpress theme for [Drowning Pool](drowningpool.tv).
+A custom wordpress theme for [Drowning Pool](https://drowningpool.tv).
 
 Based on [vuejs-wordpress-theme-starter](https://github.com/EvanAgee/vuejs-wordpress-theme-starter).
 
