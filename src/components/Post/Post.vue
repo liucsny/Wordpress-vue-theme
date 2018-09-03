@@ -44,7 +44,7 @@ export default {
       if(this.hasVideo){
         let player = this.$refs.player;
         // console.log(player)
-        player.muted= true;
+        player.muted = true;
         player.pause();
         setTimeout(()=>{
           player.play();

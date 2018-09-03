@@ -2,27 +2,24 @@
   <article class="bg-black">
     <div class="vh-100 bg-black dt w-100">
       <video ref="player" v-if="hasVideo" autoplay muted='true' loop class="bg-video" :src="bgVideoURL"></video>
-      <div v-else :style="{ backgroundImage: 'url(' + bgImgURL + ')' }" class="bg-img"></div>
-      <div class="dtc tc v-mid cover ph3 ph4-m ph5-l relative bg-black-40">
+      <div v-else-if='!showPlayer' :style="{ backgroundImage: 'url(' + bgImgURL + ')' }" class="bg-img"></div>
+      <div v-if='!showPlayer' class="dtc tc v-mid cover ph3 ph4-m ph5-l relative bg-black-40">
         <h1 class="f2 f-subheadline-l measure lh-title fw9">Drowning Pool Productions</h1>
         <div class="flex justify-center">
-          <div @click="showPlayer = true" class="f6 fw6 ttu mr4 link-button">watch reel</div>
+          <div @click="openShowPlayer" class="f6 fw6 ttu mr4 link-button">watch reel</div>
           <router-link :to="'site/' + newestPostURL" tag='div' class="f6 fw6 ttu mr4 link-button">enter site</router-link>
         </div>
       </div>
     </div>
-    <app-player @closePlayer='showPlayer = false' v-if="showPlayer" :iframe='videoIframe'></app-player>
-    <!-- <iframe width="720" height="405" scrolling="no"  style="border: none;"  allowfullscreen src="https://gaiamount.com/insert?mid=24753"></iframe> -->
-    <!-- <iframe width="100%" height="800px" scrolling="no"  style="border: none;"  allowfullscreen src="https://gaiamount.com/insert?wid=37997"></iframe> -->
   </article>
 </template>
 
 <script>
-import appPlayer from './partials/Player.vue';
+// import appPlayer from './partials/Player.vue';
 import { mapGetters } from 'vuex';
 
 export default {
-  components: {appPlayer},
+  // components: {appPlayer},
   data(){
     return {
       post: null,
@@ -31,7 +28,7 @@ export default {
       bgVideoURL: null,
       newestPostURL: null,
       showPlayer: false,
-      videoIframe: ''
+      videoURL: ''
     }
   },
   computed:{
@@ -46,7 +43,7 @@ export default {
     this.checkHasVideo();
     this.getBgImgURL();
     this.getNewestPost();
-    this.getVideoIframe();
+    this.getVideoURL();
   },
   mounted(){
     this.replayVideo();
@@ -55,6 +52,21 @@ export default {
     // console.log('mounted');
   },
   methods:{
+    openShowPlayer(){
+      this.showPlayer = true;
+      let player = this.$refs.player;
+      player.pause();
+      player.currentTime = '0'
+      player.play();
+      player.controls = true;
+      player.muted = false;
+    },
+    closeShowPlayer(){
+      this.showPlayer = false;
+      let player = this.$refs.player;
+      player.controls = false;
+      player.muted = true;
+    },
     replayVideo(){
       if(this.hasVideo){
         let player = this.$refs.player;
@@ -88,10 +100,10 @@ export default {
         this.hasVideo = false;
       }
     },
-    getVideoIframe(){
+    getVideoURL(){
       if((!!this.post.metadata)&&(!!this.post.metadata.video)){
         // console.log(this.post.metadata)
-        this.videoIframe = this.post.metadata.video[0];
+        this.videoURL = this.post.metadata.video[0];
       }
     },
     getPost(){

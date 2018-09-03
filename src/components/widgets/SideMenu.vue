@@ -3,7 +3,7 @@
     <ul v-for="(categories, key) in list" :key="key" class="menu-ul">
       <div class="menu-category-name" @click="changeOpenMenu(categories.name)">{{categories.name}}</div>
       <div :class="{'menu-open': categories.name == openMenu, 'menu-close': categories.name !== openMenu}">
-        <router-link tag='li' class="link-button list f5 pl4 pv1" v-for="(post, key) in categories.content" :key="key" :to='"/site/" + post.id + "/" +post.slug'>{{post.title.rendered}}</router-link>
+        <router-link tag='li' class="link-button list f5 pl4 pv1" v-for="(post, key) in categories.content" :key="key" :to='"/site/" + post.id + "/" +post.slug' exact>{{post.title.rendered}}</router-link>
       </div>
     </ul>
     <router-link tag='li' class="menu-category-name pl4" to='/info'>Info</router-link>
@@ -34,6 +34,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.router-link-active{
+  text-decoration: underline;
+}
+
 .menu-close{
   overflow: hidden;
   // opacity: 0;
