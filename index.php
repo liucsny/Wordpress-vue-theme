@@ -10,6 +10,6 @@
 <body>
   <div id="app"></div>
   <?php wp_footer(); ?>
-  <script src="https://unpkg.com/@ionic/core@latest/dist/ionic.js"></script>
+  <script src="https://unpkg.com/ionicons@4.2.2/dist/ionicons.js"></script>
 </body>
 </html>

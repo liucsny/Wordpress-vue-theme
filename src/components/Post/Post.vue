@@ -1,32 +1,34 @@
 <template>
   <div class="">
-    <video ref="player" v-if="hasVideo" autoplay muted='true' loop class="bg-video" :src="bgVideoURL"></video>
-    <div v-else :style="{ backgroundImage: 'url(' + bgImgURL + ')' }" class="bg-img"></div>
-    <div v-if="post" class="relative page-container pb6">
+    <video ref="player_bg" v-show="hasVideo" autoplay muted loop class="bg-video" :src="bgVideoURL"></video>
+    <div class="bg-video bg-black-20"></div>
+    <video ref="player_video" v-show="showPlayer" muted class="bg-video z-999" :src="videoURL"></video>
+    <div v-if='!hasVideo && !showPlayer' :style="{ backgroundImage: 'url(' + bgImgURL + ')' }" class="bg-img"></div>
+    <ion-icon v-if='showPlayer' class="player-close" :class="{'close-icon-show':showCloseIcon, 'close-icon-hide':!showCloseIcon}" @click='closeShowPlayer' name="close"></ion-icon>
+    <div v-if="!showPlayer" class="relative page-container pb6">
       <div class="page-title">{{ post.title.rendered }}</div>
       <div v-html="post.content.rendered"></div>
-      <div v-if=' videoIframe !== "" ' @click="showPlayer=true" class="link-button ttu f3 pt4">Watch Video</div>
+      <div v-if=' videoURL !== "" ' @click="openShowPlayer" class="link-button ttu f3 pt4">Watch Video</div>
     </div>
     <Loader v-else />
-    <app-player @closePlayer='showPlayer = false' v-if="showPlayer" :iframe='videoIframe'></app-player>
   </div>
 </template>
 
 <script>
 import Loader from '../partials/Loader.vue';
-import appPlayer from '../partials/Player.vue';
 import { mapGetters } from 'vuex';
 
 export default {
-  components: {appPlayer, Loader},
+  components: {Loader},
   data() {
     return {
+      // showCloseIcon: true,
       post: null,
       bgImgURL: null,
       hasVideo: false,
       bgVideoURL: null,
       showPlayer: false,
-      videoIframe: ''
+      videoURL: ''
     }
   },
   computed: {
@@ -37,17 +39,46 @@ export default {
     // this.getBgImgURL();
   },
   mounted(){
-    this.replayVideo();
+    // let self = this;
+    // this.replayVideo();
+    // document.addEventListener('mousemove',function showIcon(){
+    //   self.showCloseIcon = true;
+    // })
+
+    // setTimeout(()=>{
+    //   self.showCloseIcon = false;
+    // }, 3000);
   },
   methods: {
+    openShowPlayer(){
+      this.showPlayer = true;
+      let player_bg = this.$refs.player_bg;
+      let player_video = this.$refs.player_video;
+      // this.videoSrc = this.videoURL;
+      // player.pause();
+      // player.currentTime = '0';
+      player_video.muted = false;
+      player_video.controls = true;
+      player_video.play();
+    },
+    closeShowPlayer(){
+      this.showPlayer = false;
+
+      let player_bg = this.$refs.player_bg;
+      let player_video = this.$refs.player_video;
+
+      player_video.pause();
+      player_video.currentTime = '0';
+      player_bg.muted = "muted";
+    },
     replayVideo(){
       if(this.hasVideo){
-        let player = this.$refs.player;
+        let player_bg = this.$refs.player_bg;
         // console.log(player)
-        player.muted = true;
-        player.pause();
+        player_bg.muted = 'muted';
+        player_bg.pause();
         setTimeout(()=>{
-          player.play();
+          player_bg.play();
           // console.log('postTime')
         },1000)
       }
@@ -57,7 +88,7 @@ export default {
       .then(response => {
         this.post = response.data[0];
         this.checkHasVideo();
-        this.getVideoIframe()
+        this.getvideoURL()
         this.getBgImgURL();
       })
       .catch(e => {
@@ -73,10 +104,10 @@ export default {
         this.hasVideo = false;
       }
     },
-    getVideoIframe(){
+    getvideoURL(){
       if((!!this.post.metadata)&&(!!this.post.metadata.video)){
         // console.log(this.post.metadata)
-        this.videoIframe = this.post.metadata.video[0];
+        this.videoURL = this.post.metadata.video[0];
       }
     },
     getBgImgURL(){
@@ -94,9 +125,9 @@ export default {
   },
   watch: {
     '$route' (to, from) {
+      this.videoURL=''
       this.getPost();
       this.replayVideo();
-      this.videoIframe=''
       // console.log(this.$route.params)
       // react to route changes...
     }

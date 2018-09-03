@@ -1,8 +1,10 @@
 <template>
   <article class="bg-black">
     <div class="vh-100 bg-black dt w-100">
-      <video ref="player" v-if="hasVideo" autoplay muted='true' loop class="bg-video" :src="bgVideoURL"></video>
-      <div v-else-if='!showPlayer' :style="{ backgroundImage: 'url(' + bgImgURL + ')' }" class="bg-img"></div>
+      <video ref="player_video" v-show="showPlayer" muted class="bg-video" :src="videoURL"></video>
+      <video ref="player_bg" v-show="hasVideo && !showPlayer" muted autoplay loop class="bg-video" :src="bgVideoURL"></video>
+      <div v-if='!hasVideo || !showPlayer' :style="{ backgroundImage: 'url(' + bgImgURL + ')' }" class="bg-img"></div>
+      <ion-icon v-if='showPlayer' class="player-close" :class="{'close-icon-show':showCloseIcon, 'close-icon-hide':showCloseIcon}" @click='closeShowPlayer' name="close"></ion-icon>
       <div v-if='!showPlayer' class="dtc tc v-mid cover ph3 ph4-m ph5-l relative bg-black-40">
         <h1 class="f2 f-subheadline-l measure lh-title fw9">Drowning Pool Productions</h1>
         <div class="flex justify-center">
@@ -22,10 +24,12 @@ export default {
   // components: {appPlayer},
   data(){
     return {
+      showCloseIcon: true,
       post: null,
       bgImgURL: null,
       hasVideo: false,
       bgVideoURL: null,
+      // videoSrc: null,
       newestPostURL: null,
       showPlayer: false,
       videoURL: ''
@@ -54,28 +58,34 @@ export default {
   methods:{
     openShowPlayer(){
       this.showPlayer = true;
-      let player = this.$refs.player;
-      player.pause();
-      player.currentTime = '0'
-      player.play();
-      player.controls = true;
-      player.muted = false;
+      let player_bg = this.$refs.player_bg;
+      let player_video = this.$refs.player_video;
+      // this.videoSrc = this.videoURL;
+      // player.pause();
+      // player.currentTime = '0';
+      player_video.muted = false;
+      player_video.controls = true;
+      player_video.play();
     },
     closeShowPlayer(){
       this.showPlayer = false;
-      let player = this.$refs.player;
-      player.controls = false;
-      player.muted = true;
+
+      let player_bg = this.$refs.player_bg;
+      let player_video = this.$refs.player_video;
+
+      player_video.pause();
+      player_video.currentTime = '0';
+      player_bg.muted = "muted";
     },
     replayVideo(){
       if(this.hasVideo){
-        let player = this.$refs.player;
+        let player_bg = this.$refs.player_bg;
         // console.log(player)
-        player.muted= true;
-        player.pause();
+        player_bg.muted= "muted";
+        player_bg.pause();
         // player.play();
         setTimeout(()=>{
-          player.play();
+          player_bg.play();
           // console.log('time')
         },1000)
       }
@@ -96,6 +106,7 @@ export default {
       if((!!this.post.metadata)&&(!!this.post.metadata.featured_video)){
         this.hasVideo = true;
         this.bgVideoURL = this.post.metadata.featured_video[0];
+        // this.videoSrc = this.bgVideoURL;
       }else{
         this.hasVideo = false;
       }
@@ -129,5 +140,5 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 </style>
