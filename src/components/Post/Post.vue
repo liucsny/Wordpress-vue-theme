@@ -1,6 +1,6 @@
 <template>
   <div class="">
-    <video ref="player" v-if="hasVideo" autoplay muted='muted' loop class="bg-video" :src="bgVideoURL"></video>
+    <video id="postPlayer" ref="player" v-if="hasVideo" muted autoplay loop class="bg-video" :src="bgVideoURL"></video>
     <div v-else :style="{ backgroundImage: 'url(' + bgImgURL + ')' }" class="bg-img"></div>
     <div v-if="post" class="relative page-container pb6">
       <div class="page-title">{{ post.title.rendered }}</div>
@@ -37,11 +37,33 @@ export default {
   beforeMount() {
     this.getPost();
     // this.getBgImgURL();
+    
   },
   mounted(){
     this.replayVideo();
+    this.mutePlayer()
+    // setTimeout(()=>{
+    //   // console.log(this)
+    //   // console.log(this.$refs)
+    //   console.log(this.$refs.player)
+    //   this.$refs.player.muted = 'muted';
+    //   // console.log(document.getElementById('postPlayer'))
+    // },300)
+
+
   },
   methods: {
+    mutePlayer(){
+      let self = this;
+
+      let timer = setInterval(()=>{
+        console.log(self.$refs.player)
+        if(!!self.$refs.player){
+          self.$refs.player.muted = 'muted';
+          clearInterval(timer);
+        }
+      },100)
+    },
     replayVideo(){
       if(this.hasVideo){
         let player = this.$refs.player;
@@ -61,7 +83,6 @@ export default {
         this.checkHasVideo();
         this.getVideoIframe()
         this.getBgImgURL();
-        this.refs.player.muted = 'muted';
       })
       .catch(e => {
         console.log(e);
@@ -100,6 +121,7 @@ export default {
       this.getPost();
       this.replayVideo();
       this.videoIframe=''
+      this.mutePlayer();
       // console.log(this.$route.params)
       // react to route changes...
     }
