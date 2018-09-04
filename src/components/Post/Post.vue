@@ -1,6 +1,6 @@
 <template>
   <div class="">
-    <video ref="player" v-if="hasVideo" autoplay muted='true' loop class="bg-video" :src="bgVideoURL"></video>
+    <video ref="player" v-if="hasVideo" autoplay muted='muted' loop class="bg-video" :src="bgVideoURL"></video>
     <div v-else :style="{ backgroundImage: 'url(' + bgImgURL + ')' }" class="bg-img"></div>
     <div v-if="post" class="relative page-container pb6">
       <div class="page-title">{{ post.title.rendered }}</div>
@@ -61,6 +61,7 @@ export default {
         this.checkHasVideo();
         this.getVideoIframe()
         this.getBgImgURL();
+        this.refs.player.muted = 'muted';
       })
       .catch(e => {
         console.log(e);

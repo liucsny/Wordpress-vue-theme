@@ -56,7 +56,7 @@ export default {
   overflow: hidden;
   // opacity: 0;
   max-height: 0;
-  transition: max-height .4s ease-in-out;
+  transition: max-height .2s ease-in-out;
   // transition: opacity 1s ease;
 }
 
