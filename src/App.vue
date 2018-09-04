@@ -6,7 +6,10 @@
         <div class="progress-bar" role="progressbar" :style="loaderStyle" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
       </div>
     </transition>
-    <router-view/>
+    <router-view v-if="!showLoader"/>
+    <div class="bg-video flex justify-center items-center" v-else>
+      <div class="ttu f1">Loading...</div>
+    </div>
   </div>
 </template>
 
@@ -73,7 +76,18 @@ html{
   @extend .bg-black;
 }
 
+body{
+  min-width: 1200px;
+}
+
 .bg-img{
   @include bg-img;
+}
+
+.fade-enter-active {
+  transition: opacity 1s cubic-bezier(1,0,.8,1);
+}
+.fade-enter {
+  opacity: 0;
 }
 </style>

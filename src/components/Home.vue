@@ -11,7 +11,9 @@
         </div>
       </div>
     </div>
-    <app-player @closePlayer='showPlayer = false' v-if="showPlayer" :iframe='videoIframe'></app-player>
+    <transition name="fade">
+      <app-player @closePlayer='showPlayer = false' v-if="showPlayer" :iframe='videoIframe'></app-player>
+    </transition>
     <!-- <iframe width="720" height="405" scrolling="no"  style="border: none;"  allowfullscreen src="https://gaiamount.com/insert?mid=24753"></iframe> -->
     <!-- <iframe width="100%" height="800px" scrolling="no"  style="border: none;"  allowfullscreen src="https://gaiamount.com/insert?wid=37997"></iframe> -->
   </article>

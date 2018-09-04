@@ -8,7 +8,9 @@
       <div v-if=' videoIframe !== "" ' @click="showPlayer=true" class="link-button ttu f3 pt4">Watch Video</div>
     </div>
     <Loader v-else />
-    <app-player @closePlayer='showPlayer = false' v-if="showPlayer" :iframe='videoIframe'></app-player>
+    <transition name="fade">
+      <app-player @closePlayer='showPlayer = false' v-if="showPlayer" :iframe='videoIframe'></app-player>
+    </transition>
   </div>
 </template>
 
