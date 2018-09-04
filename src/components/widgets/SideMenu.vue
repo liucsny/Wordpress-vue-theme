@@ -34,6 +34,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.router-link-active{
+  text-decoration: underline;
+}
+
+
 .menu-close{
   overflow: hidden;
   // opacity: 0;

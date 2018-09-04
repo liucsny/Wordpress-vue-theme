@@ -7,14 +7,25 @@
   top: 0;
   bottom: 0;
   .player-close{
+    opacity: .1;
     position: absolute;
     top: 20px;
     right: 20px;
     // width: 20px;
     // height: 20px;
-    font-size: 2rem;
+    font-size: 3rem;
     @extend .pointer;
-    @extend .dim;
+    // @extend .dim;
+    transition: all .4s;
+    &:hover{
+      opacity: 1;
+      transition: all .4s;
+    }
+
+    &:active{
+      opacity: .3;
+      transition: all .4s;
+    }
   }
   .player-inner-container{
     width: 100vw;

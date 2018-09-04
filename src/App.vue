@@ -53,6 +53,22 @@ export default {
   font-weight: 800;
 }
 
+*::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: none !important;
+	background-color: transparent !important;
+}
+ *::-webkit-scrollbar
+{
+	width: 0 !important;
+	background-color: transparent !important;
+}
+ *::-webkit-scrollbar-thumb
+{
+	-webkit-box-shadow: none !important;
+	background-color: transparent !important;
+}
+
 html{
   @extend .bg-black;
 }
