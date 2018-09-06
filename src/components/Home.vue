@@ -3,12 +3,15 @@
     <div class="vh-100 bg-black dt w-100">
       <video ref="player" v-if="hasVideo" autoplay muted='true' loop class="bg-video" :src="bgVideoURL"></video>
       <div v-else :style="{ backgroundImage: 'url(' + bgImgURL + ')' }" class="bg-img"></div>
-      <div class="dtc tc v-mid cover ph3 ph4-m ph5-l relative bg-black-40">
-        <h1 class="f2 f-subheadline-l measure lh-title fw9">Drowning Pool Productions</h1>
-        <div class="flex justify-center">
-          <div @click="showPlayer = true" class="f6 fw6 ttu mr4 link-button">watch reel</div>
-          <router-link :to="'site/' + newestPostURL" tag='div' class="f6 fw6 ttu mr4 link-button">enter site</router-link>
+      <div class="dtc tc v-mid home-img-container cover ph3 ph4-m ph5-l relative bg-black-40">
+        <!-- <h1 class="f2 f-subheadline-l measure lh-title fw9">Drowning Pool Productions</h1> -->
+        <img class="w-50" :src="logo" alt="">
+        <div class="flex justify-center home-links">
+          <div @click="onClickWatch" class="f6 fw6 ttu mr4 link-button">watch reel</div>
+          <!-- <router-link :to="'site/' + newestPostURL" tag='div' class="f6 fw6 ttu mr4 link-button">enter site</router-link> -->
+          <router-link to="info" tag='div' class="f6 fw6 ttu mr4 link-button">enter site</router-link>
         </div>
+        <div class="placeholder-div"></div>
       </div>
     </div>
     <transition name="fade">
@@ -32,14 +35,15 @@ export default {
       bgImgURL: null,
       hasVideo: false,
       bgVideoURL: null,
-      newestPostURL: null,
+      // newestPostURL: null,
       showPlayer: false,
-      videoIframe: ''
+      videoIframe: '',
     }
   },
   computed:{
     ...mapGetters({
       page: 'page',
+      logo: 'logo'
       // allPagesLoaded: 'allPagesLoaded',
       // ecentPosts: 'recentPosts',
     }),
@@ -48,29 +52,34 @@ export default {
     this.getPost();
     this.checkHasVideo();
     this.getBgImgURL();
-    this.getNewestPost();
+    // this.getNewestPost();
     this.getVideoIframe();
   },
   mounted(){
     this.replayVideo();
     this.setAudioURL();
     this.playAudio();
+    console.log(this.logo)
     // let player = document.getElementById('player');
     // console.log(player)
     // console.log('mounted');
   },
   watch:{
-    showPlayer(from,to){
-      let audioPlayer = document.getElementById('audioPlayer');
-      if(!to){
-        audioPlayer.pause();
-      }else{
-        audioPlayer.currentTime = 0;
-        audioPlayer.play();
-      }
-    }
+    // showPlayer(from,to){
+    //   let audioPlayer = document.getElementById('audioPlayer');
+    //   if(!to){
+    //     audioPlayer.pause();
+    //   }else{
+    //     audioPlayer.currentTime = 0;
+    //     audioPlayer.play();
+    //   }
+    // }
   },
   methods:{
+    onClickWatch(){
+      this.showPlayer = true;
+      document.getElementById('audio-control-icon').click();
+    },
     setAudioURL(){
       this.$store.commit('setAudio',this.post.metadata.audio);
       // console.log('set')
@@ -86,7 +95,7 @@ export default {
       // 必须在等待150ms后play()，否则报错： The play() request was interrupted by a new load request
       setTimeout(function () {
           audioPlayer.play();
-      }, 150);
+      }, 1000);
     },
     replayVideo(){
       if(this.hasVideo){
@@ -151,4 +160,15 @@ export default {
 </script>
 
 <style lang="scss">
+.home-links{
+  margin-top: -10vw;
+}
+
+.home-img-container{
+  // padding-top: 100vw;
+}
+.placeholder-div{
+  width: 100px;
+  height: 200px;
+}
 </style>

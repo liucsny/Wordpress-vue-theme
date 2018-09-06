@@ -7,7 +7,8 @@ const state = {
   notice: null,
   loading: true,
   loading_progress: 0,
-  audio: null
+  audio: null,
+  logo: null,
 }
 
 // getters
@@ -15,11 +16,18 @@ const getters = {
   isLoading: state => state.loading_progress < 100,
   loadingProgress: state=> state.loading_progress,
   loadingIncrement: state => { return 100 / SETTINGS.LOADING_SEGMENTS },
-  audio: state => state.audio
+  audio: state => state.audio,
+  logo: state => state.logo,
 }
 
 // actions
 const actions = {
+  loadLogo({commit}){
+    axios.get(window.SETTINGS.API_BASE_PATH + 'media?slug=logo').then(response=>{
+      // console.log(response.data)
+      commit('loadLogo',response.data[0].guid.rendered)
+    })
+  }
 }
 
 // mutations
@@ -32,6 +40,9 @@ const mutations = {
   },
   setAudio(state, autioURL){
     state.audio = autioURL;
+  },
+  loadLogo(state, logo){
+    state.logo = logo;
   }
 }
 

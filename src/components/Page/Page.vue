@@ -1,9 +1,8 @@
 <template>
   <div class="">
-    <video ref="player" v-if="hasVideo" autoplay loop class="bg-video">
-      <source :src="bgVideoURL" type="video/mp4">
-    </video>
+    <video ref="player" v-if="hasVideo" autoplay loop class="bg-video" :src="bgVideoURL"></video>
     <div v-else :style="{ backgroundImage: 'url(' + bgImgURL + ')' }" class="bg-img"></div>
+    <div class="block"></div>
     <div v-if="allPagesLoaded" class="relative page-container">
       <div class="page-title">{{ pageContent.title.rendered }}</div>
       <div v-html="pageContent.content.rendered"></div>
@@ -44,8 +43,19 @@ export default {
   },
   mounted(){
     this.replayVideo();
+    this.mutePlayer();
   },
   methods: {
+    mutePlayer(){
+      let self = this;
+      let timer = setInterval(()=>{
+        // console.log(self.$refs.player)
+        if(!!self.$refs.player){
+          self.$refs.player.muted = 'muted';
+          clearInterval(timer);
+        }
+      },100)
+    },
     replayVideo(){
       if(this.hasVideo){
         let player = this.$refs.player;

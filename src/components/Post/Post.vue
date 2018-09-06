@@ -2,6 +2,7 @@
   <div class="">
     <video id="postPlayer" ref="player" v-if="hasVideo" muted autoplay loop class="bg-video" :src="bgVideoURL"></video>
     <div v-else :style="{ backgroundImage: 'url(' + bgImgURL + ')' }" class="bg-img"></div>
+    <div class="block"></div>
     <div v-if="post" class="relative page-container pb6">
       <div class="page-title">{{ post.title.rendered }}</div>
       <div v-html="post.content.rendered"></div>
@@ -40,7 +41,7 @@ export default {
   },
   mounted(){
     this.replayVideo();
-    this.mutePlayer()
+    this.mutePlayer();
   },
   methods: {
     setAudioURL(url){
@@ -48,7 +49,6 @@ export default {
     },
     mutePlayer(){
       let self = this;
-
       let timer = setInterval(()=>{
         // console.log(self.$refs.player)
         if(!!self.$refs.player){
@@ -79,13 +79,13 @@ export default {
         // console.log(!!response.data[0].metadata.audio)
         if(!!response.data[0].metadata.audio){
           let audioPlayer = document.getElementById('audioPlayer')
-          console.log(audioPlayer)
+          // console.log(audioPlayer)
           audioPlayer.currentTime = 0;
           // audioPlayer.play();
           // 必须在等待150ms后play()，否则报错： The play() request was interrupted by a new load request
           setTimeout(function () {
             audioPlayer.play();
-          }, 150);
+          }, 1000);
           this.setAudioURL(response.data[0].metadata.audio)
         }else{
           audioPlayer.pause();

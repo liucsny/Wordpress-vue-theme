@@ -11,6 +11,9 @@
     <div class="bg-video flex justify-center items-center" v-else>
       <div class="ttu f1">Loading...</div>
     </div>
+    <div id="audio-control">
+      <ion-icon id="audio-control-icon" :name="audioIcon" @click='toggleAudio'></ion-icon>
+    </div>
   </div>
 </template>
 
@@ -20,7 +23,8 @@ import { mapGetters, mapActions, mapMutations } from 'vuex'
 export default {
   data() {
     return {
-      showLoader: true
+      showLoader: true,
+      audioIcon: 'pause'
     }
   },
   computed: {
@@ -29,17 +33,9 @@ export default {
       loadingProgress: 'loadingProgress',
       audio: 'audio',
     }),
-
     loaderStyle() {
       return `width: ${this.loadingProgress}%;`
-    }
-  },
-  mounted(){
-          // let audioPlayer = document.getElementById('audioPlayer');
-          // audioPlayer.play();
-    // setInterval(()=>{
-    //   console.log(this.$store.getters.loadingProgress)
-    // },1)
+    },
   },
   watch: {
     // watch the value of isLoading and once it's false hide the loader
@@ -55,6 +51,18 @@ export default {
     },
     '$route'(from, to){
       // console.log(to)
+    }
+  },
+  methods:{
+    toggleAudio(){
+      let audioPlayer = document.getElementById('audioPlayer');
+      if(audioPlayer.paused){
+        audioPlayer.play();
+        this.audioIcon = 'pause'
+      }else{
+        audioPlayer.pause();
+        this.audioIcon = 'play'
+      }
     }
   }
 }
@@ -89,6 +97,10 @@ html{
   @extend .bg-black;
 }
 
+body{
+  overflow: hidden;
+}
+
 .bg-img{
   @include bg-img;
 }
@@ -98,5 +110,13 @@ html{
 }
 .fade-enter {
   opacity: 0;
+}
+
+#audio-control{
+  position: absolute;
+  bottom: 1.2rem;
+  right: 2rem;
+  @extend .pointer;
+  @extend .dim;
 }
 </style>

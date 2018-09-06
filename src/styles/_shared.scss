@@ -3,6 +3,12 @@
   height: 100vh;
 }
 
+.block{
+  @extend .full;
+  @extend .bg-black-40;
+  @extend .absolute;
+}
+
 .bg-video{
   @extend .absolute;
   @extend .w-100;

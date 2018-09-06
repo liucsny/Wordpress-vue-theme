@@ -17,6 +17,7 @@ export default {
   methods:{
     closePlayer(){
       this.$emit( 'closePlayer' )
+      document.getElementById('audio-control-icon').click();
     }
   }
 }

@@ -53,6 +53,7 @@ new Vue({
     this.$store.commit(types.RESET_LOADING_PROGRESS)
     this.$store.dispatch('getAllCategories')
     this.$store.dispatch('getAllPages')
+    this.$store.dispatch('loadLogo')
 
     // Once user is signed in/out, uncomment if you need Firebase authentication
     // auth.onAuthStateChanged(user => {
