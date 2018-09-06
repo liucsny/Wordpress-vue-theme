@@ -1,6 +1,7 @@
 <template>
   <div id="my-app" class="yellow">
     <!-- Loader -->
+    <audio :src="audio" id="audioPlayer" loop></audio>
     <transition name="loader-animation" enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
       <div class="progress loader" v-if="showLoader">
         <div class="progress-bar" role="progressbar" :style="loaderStyle" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
@@ -25,14 +26,21 @@ export default {
   computed: {
     ...mapGetters({
       isLoading: 'isLoading',
-      loadingProgress: 'loadingProgress'
+      loadingProgress: 'loadingProgress',
+      audio: 'audio',
     }),
 
     loaderStyle() {
       return `width: ${this.loadingProgress}%;`
     }
   },
-
+  mounted(){
+          // let audioPlayer = document.getElementById('audioPlayer');
+          // audioPlayer.play();
+    // setInterval(()=>{
+    //   console.log(this.$store.getters.loadingProgress)
+    // },1)
+  },
   watch: {
     // watch the value of isLoading and once it's false hide the loader
     isLoading(val) {
@@ -40,8 +48,13 @@ export default {
         let self = this
         setTimeout(function(){
           self.showLoader = false
+          // let audioPlayer = document.getElementById('audioPlayer');
+          // audioPlayer.play();
         }, 1000)
       }
+    },
+    '$route'(from, to){
+      // console.log(to)
     }
   }
 }
@@ -74,10 +87,6 @@ export default {
 
 html{
   @extend .bg-black;
-}
-
-body{
-  min-width: 1200px;
 }
 
 .bg-img{

@@ -27,6 +27,7 @@ export default {
   components: {appPlayer},
   data(){
     return {
+      // audioURL:null,
       post: null,
       bgImgURL: null,
       hasVideo: false,
@@ -52,11 +53,41 @@ export default {
   },
   mounted(){
     this.replayVideo();
+    this.setAudioURL();
+    this.playAudio();
     // let player = document.getElementById('player');
     // console.log(player)
     // console.log('mounted');
   },
+  watch:{
+    showPlayer(from,to){
+      let audioPlayer = document.getElementById('audioPlayer');
+      if(!to){
+        audioPlayer.pause();
+      }else{
+        audioPlayer.currentTime = 0;
+        audioPlayer.play();
+      }
+    }
+  },
   methods:{
+    setAudioURL(){
+      this.$store.commit('setAudio',this.post.metadata.audio);
+      // console.log('set')
+    },
+    playAudio(){
+      let audioPlayer = document.getElementById('audioPlayer');
+      audioPlayer.currentTime = 0;
+      // let playPromise = audioPlayer.play();
+      // console.log(playPromise)
+      // playPromise.then(d=>{
+      //   console.log(d)
+      // })
+      // 必须在等待150ms后play()，否则报错： The play() request was interrupted by a new load request
+      setTimeout(function () {
+          audioPlayer.play();
+      }, 150);
+    },
     replayVideo(){
       if(this.hasVideo){
         let player = this.$refs.player;

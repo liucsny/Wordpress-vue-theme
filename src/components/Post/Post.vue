@@ -37,27 +37,20 @@ export default {
   beforeMount() {
     this.getPost();
     // this.getBgImgURL();
-    
   },
   mounted(){
     this.replayVideo();
     this.mutePlayer()
-    // setTimeout(()=>{
-    //   // console.log(this)
-    //   // console.log(this.$refs)
-    //   console.log(this.$refs.player)
-    //   this.$refs.player.muted = 'muted';
-    //   // console.log(document.getElementById('postPlayer'))
-    // },300)
-
-
   },
   methods: {
+    setAudioURL(url){
+      this.$store.commit('setAudio',url);
+    },
     mutePlayer(){
       let self = this;
 
       let timer = setInterval(()=>{
-        console.log(self.$refs.player)
+        // console.log(self.$refs.player)
         if(!!self.$refs.player){
           self.$refs.player.muted = 'muted';
           clearInterval(timer);
@@ -83,6 +76,21 @@ export default {
         this.checkHasVideo();
         this.getVideoIframe()
         this.getBgImgURL();
+        // console.log(!!response.data[0].metadata.audio)
+        if(!!response.data[0].metadata.audio){
+          let audioPlayer = document.getElementById('audioPlayer')
+          console.log(audioPlayer)
+          audioPlayer.currentTime = 0;
+          // audioPlayer.play();
+          // 必须在等待150ms后play()，否则报错： The play() request was interrupted by a new load request
+          setTimeout(function () {
+            audioPlayer.play();
+          }, 150);
+          this.setAudioURL(response.data[0].metadata.audio)
+        }else{
+          audioPlayer.pause();
+          this.setAudioURL(null)
+        }
       })
       .catch(e => {
         console.log(e);
@@ -122,8 +130,16 @@ export default {
       this.replayVideo();
       this.videoIframe=''
       this.mutePlayer();
-      // console.log(this.$route.params)
-      // react to route changes...
+    },
+    showPlayer(from,to){
+      let audioPlayer = document.getElementById('audioPlayer');
+      // console.log(to)
+      if(!to){
+        audioPlayer.pause();
+      }else{
+        audioPlayer.currentTime = 0;
+        audioPlayer.play();
+      }
     }
   }
 }
