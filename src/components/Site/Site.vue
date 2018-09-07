@@ -3,7 +3,8 @@
     <div class="menu-side-bar">
       <!-- <router-link tag='div' to='/' class="menu-logo">Drowning Pool</router-link> -->
       <router-link tag='div' to='/' class="menu-logo">
-        <img class="w5" :src="logo" alt="">
+        <!-- <img class="w5" :src="logo" alt=""> -->
+        <div class="bg-img-logo menu-logo-img" :style="{ backgroundImage: 'url(' + logo + ')' }"></div>
       </router-link>
       <side-menu :list='menuList'></side-menu>
     </div>
@@ -61,3 +62,11 @@ export default {
 }
 </script>
 
+<style lang="scss" scoped>
+.menu-logo-img{
+  // border: yellow 1px solid;
+  margin-top: 0rem;
+  width: 14rem;
+  height: 6rem;
+}
+</style>
