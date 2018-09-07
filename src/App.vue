@@ -75,6 +75,7 @@ export default {
   font-family: adrianna-condensed, sans-serif !important;
   font-style: italic;
   font-weight: 800;
+  letter-spacing: .125rem;
 }
 
 *::-webkit-scrollbar-track
