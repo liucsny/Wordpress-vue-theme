@@ -1,7 +1,10 @@
 <template>
   <div class="bg-black full">
     <div class="menu-side-bar">
-      <router-link tag='div' to='/' class="menu-logo">Drowning Pool</router-link>
+      <!-- <router-link tag='div' to='/' class="menu-logo">Drowning Pool</router-link> -->
+      <router-link tag='div' to='/' class="menu-logo">
+        <img class="w5" :src="logo" alt="">
+      </router-link>
       <side-menu :list='menuList'></side-menu>
     </div>
     <router-view/>
@@ -24,6 +27,7 @@ export default {
       allCategories: 'allCategories',
       allCategoriesLoaded: 'allCategoriesLoaded',
       recentPosts: 'recentPosts',
+      logo: 'logo'
     }),
     getAllCategories:{
       get(){

@@ -3,15 +3,17 @@
     <div class="vh-100 bg-black dt w-100">
       <video ref="player" v-if="hasVideo" autoplay muted='true' loop class="bg-video" :src="bgVideoURL"></video>
       <div v-else :style="{ backgroundImage: 'url(' + bgImgURL + ')' }" class="bg-img"></div>
-      <div class="dtc tc v-mid home-img-container cover ph3 ph4-m ph5-l relative bg-black-40">
+      <div class="v-mid justify-center home-container cover ph3 ph4-m ph5-l relative bg-black-40">
         <!-- <h1 class="f2 f-subheadline-l measure lh-title fw9">Drowning Pool Productions</h1> -->
-        <img class="w-50" :src="logo" alt="">
-        <div class="flex justify-center home-links">
-          <div @click="onClickWatch" class="f6 fw6 ttu mr4 link-button">watch reel</div>
-          <!-- <router-link :to="'site/' + newestPostURL" tag='div' class="f6 fw6 ttu mr4 link-button">enter site</router-link> -->
-          <router-link to="info" tag='div' class="f6 fw6 ttu mr4 link-button">enter site</router-link>
+        <!-- <img class="w-50" :src="logo" alt=""> -->
+        <div class="w6 home-inner-container">
+          <div class="bg-img-logo bg-logo" :style="{ backgroundImage: 'url(' + logo + ')' }"></div>
+          <div class="flex justify-center home-links mt4">
+            <div @click="onClickWatch" class="f6 fw6 ttu mr4 link-button">watch reel</div>
+            <!-- <router-link :to="'site/' + newestPostURL" tag='div' class="f6 fw6 ttu mr4 link-button">enter site</router-link> -->
+            <router-link to="info" tag='div' class="f6 fw6 ttu mr4 link-button">enter site</router-link>
+          </div>
         </div>
-        <div class="placeholder-div"></div>
       </div>
     </div>
     <transition name="fade">
@@ -160,15 +162,28 @@ export default {
 </script>
 
 <style lang="scss">
-.home-links{
-  margin-top: -10vw;
+
+
+.home-container{
+  height: 100vh;
+  // padding-top: 20rem;
+  display: flex;
+  // vertical-align: middle;
 }
 
-.home-img-container{
-  // padding-top: 100vw;
+.home-inner-container{
+  width: 40rem;
+  margin: auto;
+  // border: 1px red solid;
 }
+
 .placeholder-div{
   width: 100px;
   height: 200px;
+}
+
+.bg-logo{
+  height: 40vh;
+  // border: 1px yellow solid;
 }
 </style>
