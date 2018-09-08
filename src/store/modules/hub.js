@@ -8,6 +8,7 @@ const state = {
   loading: true,
   loading_progress: 0,
   audio: null,
+  audioIsPlaying: true,
   logo: null,
 }
 
@@ -18,6 +19,7 @@ const getters = {
   loadingIncrement: state => { return 100 / SETTINGS.LOADING_SEGMENTS },
   audio: state => state.audio,
   logo: state => state.logo,
+  audioIsPlaying: state => state.audioIsPlaying,
 }
 
 // actions
@@ -43,6 +45,12 @@ const mutations = {
   },
   loadLogo(state, logo){
     state.logo = logo;
+  },
+  playTheAudio(state){
+    state.audioIsPlaying = true;
+  },
+  pauseTheAudio(state){
+    state.audioIsPlaying = false;
   }
 }
 

@@ -33,8 +33,10 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      audioIsPlaying: 'audioIsPlaying'
+    }),
   },
-
   beforeMount() {
     this.getPost();
     // this.getBgImgURL();
@@ -70,6 +72,7 @@ export default {
       }
     },
     getPost: function() {
+      let self = this;
       axios.get(window.SETTINGS.API_BASE_PATH + 'posts?slug=' + this.$route.params.postSlug)
       .then(response => {
         this.post = response.data[0];
@@ -78,18 +81,20 @@ export default {
         this.getBgImgURL();
         // console.log(!!response.data[0].metadata.audio)
         if(!!response.data[0].metadata.audio){
+          self.setAudioURL(response.data[0].metadata.audio)
           let audioPlayer = document.getElementById('audioPlayer')
-          // console.log(audioPlayer)
-          audioPlayer.currentTime = 0;
-          // audioPlayer.play();
-          // 必须在等待150ms后play()，否则报错： The play() request was interrupted by a new load request
-          setTimeout(function () {
-            audioPlayer.play();
-          }, 1000);
-          this.setAudioURL(response.data[0].metadata.audio)
+          if(self.audioIsPlaying){
+            audioPlayer.currentTime = 0;
+            setTimeout(function () {
+              audioPlayer.play();
+              self.$store.commit('playTheAudio')
+            }, 1000);
+          }
         }else{
+          // 如果进入没有音乐的页面不停止上一个页面的音乐，就把下面三段代码注释掉
+          self.setAudioURL(null)
           audioPlayer.pause();
-          this.setAudioURL(null)
+          self.$store.commit('pauseTheAudio')
         }
       })
       .catch(e => {

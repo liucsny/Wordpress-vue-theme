@@ -1,12 +1,13 @@
 <template>
   <div class="player-container">
-    <!-- <div class="player-close" @click='closePlayer'>x</div> -->
     <ion-icon class="player-close" @click='closePlayer' name="close"></ion-icon>
       <div class="player-inner-container" v-html="iframe"></div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   props:{
     iframe:{
@@ -14,10 +15,17 @@ export default {
       default: ''
     }
   },
+  computed:{
+    ...mapGetters({
+      audioIsPlaying: 'audioIsPlaying'
+    }),
+  },
   methods:{
     closePlayer(){
-      this.$emit( 'closePlayer' )
-      document.getElementById('audio-control-icon').click();
+      this.$emit('closePlayer')
+      if(this.audioIsPlaying){
+        document.getElementById('audioPlayer').play();
+      }
     }
   }
 }

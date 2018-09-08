@@ -24,7 +24,7 @@ export default {
   data() {
     return {
       showLoader: true,
-      audioIcon: 'pause'
+      // audioIcon: 'pause'
     }
   },
   computed: {
@@ -32,10 +32,18 @@ export default {
       isLoading: 'isLoading',
       loadingProgress: 'loadingProgress',
       audio: 'audio',
+      audioIsPlaying: 'audioIsPlaying'
     }),
     loaderStyle() {
       return `width: ${this.loadingProgress}%;`
     },
+    audioIcon(){
+      if(this.audioIsPlaying){
+        return 'pause'
+      }else{
+        return 'play'
+      }
+    }
   },
   watch: {
     // watch the value of isLoading and once it's false hide the loader
@@ -50,18 +58,17 @@ export default {
       }
     },
     '$route'(from, to){
-      // console.log(to)
-    }
+    },
   },
   methods:{
     toggleAudio(){
       let audioPlayer = document.getElementById('audioPlayer');
       if(audioPlayer.paused){
         audioPlayer.play();
-        this.audioIcon = 'pause'
+        this.$store.commit('playTheAudio')
       }else{
         audioPlayer.pause();
-        this.audioIcon = 'play'
+        this.$store.commit('pauseTheAudio')
       }
     }
   }
@@ -71,10 +78,14 @@ export default {
 @import './styles/app.scss';
 @import url("https://use.typekit.net/vol3eny.css");
 
+$main-yellow: #b6a034;
+
 *{
   font-family: adrianna-condensed, sans-serif !important;
   font-style: italic;
   font-weight: 800;
+  letter-spacing: .125rem;
+  color: $main-yellow;
 }
 
 *::-webkit-scrollbar-track

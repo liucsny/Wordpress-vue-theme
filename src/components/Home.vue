@@ -4,21 +4,16 @@
       <video ref="player" v-if="hasVideo" autoplay muted='true' loop class="bg-video" :src="bgVideoURL"></video>
       <div v-else :style="{ backgroundImage: 'url(' + bgImgURL + ')' }" class="bg-img"></div>
       <div class="dtc tc v-mid home-img-container cover ph3 ph4-m ph5-l relative bg-black-40">
-        <!-- <h1 class="f2 f-subheadline-l measure lh-title fw9">Drowning Pool Productions</h1> -->
-        <img class="w-50" :src="logo" alt="">
+        <h1 class="f2 f-subheadline-l measure lh-title fw9">Drowning Pool Productions</h1>
         <div class="flex justify-center home-links">
           <div @click="onClickWatch" class="f6 fw6 ttu mr4 link-button">watch reel</div>
-          <!-- <router-link :to="'site/' + newestPostURL" tag='div' class="f6 fw6 ttu mr4 link-button">enter site</router-link> -->
           <router-link to="info" tag='div' class="f6 fw6 ttu mr4 link-button">enter site</router-link>
         </div>
-        <div class="placeholder-div"></div>
       </div>
     </div>
     <transition name="fade">
       <app-player @closePlayer='showPlayer = false' v-if="showPlayer" :iframe='videoIframe'></app-player>
     </transition>
-    <!-- <iframe width="720" height="405" scrolling="no"  style="border: none;"  allowfullscreen src="https://gaiamount.com/insert?mid=24753"></iframe> -->
-    <!-- <iframe width="100%" height="800px" scrolling="no"  style="border: none;"  allowfullscreen src="https://gaiamount.com/insert?wid=37997"></iframe> -->
   </article>
 </template>
 
@@ -43,7 +38,8 @@ export default {
   computed:{
     ...mapGetters({
       page: 'page',
-      logo: 'logo'
+      logo: 'logo',
+      audioIsPlaying: 'audioIsPlaying'
       // allPagesLoaded: 'allPagesLoaded',
       // ecentPosts: 'recentPosts',
     }),
@@ -59,26 +55,13 @@ export default {
     this.replayVideo();
     this.setAudioURL();
     this.playAudio();
-    console.log(this.logo)
-    // let player = document.getElementById('player');
-    // console.log(player)
-    // console.log('mounted');
   },
   watch:{
-    // showPlayer(from,to){
-    //   let audioPlayer = document.getElementById('audioPlayer');
-    //   if(!to){
-    //     audioPlayer.pause();
-    //   }else{
-    //     audioPlayer.currentTime = 0;
-    //     audioPlayer.play();
-    //   }
-    // }
   },
   methods:{
     onClickWatch(){
       this.showPlayer = true;
-      document.getElementById('audio-control-icon').click();
+      document.getElementById('audioPlayer').pause();
     },
     setAudioURL(){
       this.$store.commit('setAudio',this.post.metadata.audio);
@@ -86,34 +69,29 @@ export default {
     },
     playAudio(){
       let audioPlayer = document.getElementById('audioPlayer');
-      audioPlayer.currentTime = 0;
-      // let playPromise = audioPlayer.play();
-      // console.log(playPromise)
-      // playPromise.then(d=>{
-      //   console.log(d)
-      // })
-      // 必须在等待150ms后play()，否则报错： The play() request was interrupted by a new load request
-      setTimeout(function () {
-          audioPlayer.play();
-      }, 1000);
+      console.log(this.audioIsPlaying)
+      if(this.audioIsPlaying){
+        audioPlayer.currentTime = 0;
+        this.$store.commit('playTheAudio')
+        // 必须在等待150ms后play()，否则报错： The play() request was interrupted by a new load request
+        setTimeout(function () {
+            audioPlayer.play();
+        }, 1000);
+      }
     },
     replayVideo(){
       if(this.hasVideo){
         let player = this.$refs.player;
-        // console.log(player)
         player.muted= true;
         player.pause();
-        // player.play();
         setTimeout(()=>{
           player.play();
-          // console.log('time')
         },1000)
       }
     },
     getNewestPost(){
       axios.get(window.SETTINGS.API_BASE_PATH + 'posts?per_page=1')
             .then(response=>{
-              // console.log(response.data[0])
               this.newestPostURL = response.data[0].id + '/' + response.data[0].slug
             })
             .catch(e => {
@@ -121,8 +99,6 @@ export default {
             })
     },
     checkHasVideo(){
-      // let suffix = this.bgImgURL.substring(this.bgImgURL.indexOf(".")+1);
-      // this.isImg = (suffix == 'png')||(suffix == 'jpg')||(suffix == 'jpeg')||(suffix == 'gif')||(suffix == 'bmp');
       if((!!this.post.metadata)&&(!!this.post.metadata.featured_video)){
         this.hasVideo = true;
         this.bgVideoURL = this.post.metadata.featured_video[0];
@@ -132,7 +108,6 @@ export default {
     },
     getVideoIframe(){
       if((!!this.post.metadata)&&(!!this.post.metadata.video)){
-        // console.log(this.post.metadata)
         this.videoIframe = this.post.metadata.video[0];
       }
     },
@@ -140,18 +115,12 @@ export default {
       this.post =  this.page('home');
     },
     getBgImgURL(){
-
-      // console.log(this.post.metadata.featured_video[0])
-
-
       if(!this.hasVideo){
         let homeMediaId = this.post.featured_media;
         axios.get(window.SETTINGS.API_BASE_PATH + 'media/' + homeMediaId)
             .then(response => {
-            // 这里调整图片filesize大小
-            //   console.log(response.data.media_details.sizes.medium.source_url)
+              // 这里调整图片filesize大小
               this.bgImgURL = response.data.media_details.sizes.large.source_url;
-              // console.log(this.hasVideo)
         })
       }
     },
@@ -160,9 +129,9 @@ export default {
 </script>
 
 <style lang="scss">
-.home-links{
-  margin-top: -10vw;
-}
+// .home-links{
+//   margin-top: -10vw;
+// }
 
 .home-img-container{
   // padding-top: 100vw;
