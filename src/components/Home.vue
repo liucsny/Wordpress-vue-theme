@@ -69,7 +69,7 @@ export default {
     },
     playAudio(){
       let audioPlayer = document.getElementById('audioPlayer');
-      console.log(this.audioIsPlaying)
+      // console.log(this.audioIsPlaying)
       if(this.audioIsPlaying){
         audioPlayer.currentTime = 0;
         this.$store.commit('playTheAudio')
